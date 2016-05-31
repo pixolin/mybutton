@@ -1,10 +1,27 @@
 <?php
 /*
-Plugin Name: Peters Titel
-Version: 0.1
-Description: Gibt vor und nach dem Titel von Beiträgen etwas aus
+Plugin Name: MyTitle
+Version: 0.2
+Description: Gibt vor und nach dem Titel von Beiträgen etwas aus. (Einstellungen können im Menü Einstellungen > Lesen vorgenommen werden.)
 Author: Bego Mario Garde
 Author URI: https://pixolin.de
+License: GPLv2
+License URI:  https://www.gnu.org/licenses/gpl-2.0.html
+
+(c) Bego Mario Garde, 2016
+MyTitle is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 2 of the License, or
+any later version.
+
+MyTitle is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Scroll to Anchor. If not, see https://www.gnu.org/licenses/gpl-2.0.html.
+
 */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
