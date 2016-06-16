@@ -2,7 +2,7 @@
 /*
 Plugin Name: MyButton
 Version: 0.1
-Description: Fügt Beiträgen am Ende einen Button hinzu.
+Description: Adds a custom button underneath posts.
 Author: Bego Mario Garde
 Author URI: https://pixolin.de
 License: GPLv2
@@ -31,19 +31,35 @@ define( 'MYBUTTON_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'MYBUTTON_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
 /*
+ * When registered, set default setting values
+ */
+register_activation_hook( __FILE__, 'mybutton_set_up_options' );
+function mybutton_set_up_options(){
+  	if( false == get_option( 'mybutton' ) ) {
+			add_option('mybutton', array(
+				'text'=> 'Button',
+				'url' => 'https://wordpress.org')
+			);
+		}
+}
+
+/*
+ * Load Textdomain
+ */
+add_action( 'plugins_loaded', 'mybutton_plugins_loaded' );
+	function mybutton_plugins_loaded() {
+		load_plugin_textdomain( 'mybutton', false, plugin_basename( dirname( __FILE__ ) ) . '/languages' );
+}
+
+/*
  * Settings
  */
 require_once( MYBUTTON_PLUGIN_PATH . 'settings/settings.php');
 $mybuttonsettings = new MyButtonSettings();
 
 /*
- * Load Textdomain
+ * Function to create the button
  */
-add_action( 'plugins_loaded', 'mybutton_load_plugin_textdomain' );
-function mybutton_load_plugin_textdomain() {
-    load_plugin_textdomain( 'mybutton', FALSE, MYBUTTON_PLUGIN_PATH . '/languages/' );
-}
-
 add_filter( 'the_content', 'mb_add_the_button', 10, 1 );
 
 if(!function_exists('mb_add_the_button')):
@@ -61,13 +77,13 @@ function mb_add_the_button ( $content ) {
 }
 endif;
 
-register_activation_hook( __FILE__, 'mybutton_set_up_options' );
+add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'mb_plugin_action_links' );
+if( !function_exists('mb_plugin_action_links')) {
+	function mb_plugin_action_links( $links ) {
+		$mylinks = array(
+		'<a href="options-general.php?page=mybutton">'. __( 'Settings', 'mybutton' ) . '</a>'
+		);
 
-function mybutton_set_up_options(){
-  	if( false == get_option( 'mybutton' ) ) {
-			add_option('mybutton', array(
-				'text'=>'Button',
-				'url' => 'https://wordpress.org')
-			);
-		}
+		return array_merge( $links, $mylinks );
+	}
 }
