@@ -66,8 +66,13 @@ if(!function_exists('mb_add_the_button')):
 function mb_add_the_button ( $content ) {
 
 		$settings  = (array) get_option( 'mybutton' );
+		if( !empty($settings['url']) ) {
+			$link = $settings['url'];
+		} else {
+			$link = '#';
+		}
 
-		$out = '<form class="mybutton" action="'.esc_url( $settings['url'] ).'" method="get">';
+		$out = '<form class="mybutton" action="'. $link .'" method="get">';
 		$out .= '<button>'. esc_html($settings['text']) .'</button>';
 		$out .= '</form>';
 
