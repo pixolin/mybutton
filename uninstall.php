@@ -8,7 +8,7 @@
      exit();
  }
 
- delete_option( $mytitle );
+ delete_option( $mybutton );
 
  // For site options in Multisite
- delete_site_option( $mytitle );  
+ delete_site_option( $mybutton );  

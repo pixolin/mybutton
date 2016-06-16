@@ -3,50 +3,68 @@
  * Settings
  */
 
-class My_Title {
+class MyButtonSettings {
 		function __construct() {
-			add_action( 'admin_init', array( $this, 'register') );
+			add_action( 'admin_init', array( $this, 'register_button_setting') );
 			add_action( 'admin_init', array( $this, 'setup_options' ) );
 			add_action( 'admin_init', array( $this, 'section_and_fields' ) );
+			add_action( 'admin_menu', array( $this, 'mybutton_settings_page') );
 		}
 
-		function register() {
-			register_setting( 'reading', 'mytitle', array( $this, 'sanitize') );
+		function register_button_setting() {
+			register_setting( 'mybutton', 'mybutton', array( $this, 'sanitize') );
 		}
 
 		function setup_options() {
-			if( false == get_option( 'mytitle' ) ) {
-        add_option( 'mytitle' );
+			if( false == get_option( 'mybutton' ) ) {
+        add_option( 'mybutton' );
     	}
 		}
 
 		function section_and_fields(){
 			add_settings_section(
-				'mytitle_section' ,
-				'Text vor und nach Beitragstiteln',
+				'mybutton_section' ,
+				__('Please provide text and URL for the button.','mybutton'),
 				array(),
-				'reading' // place in menu "reading"
+				'mybutton' // place in menu "reading"
 			);
 
 			add_settings_field(
-				'mytitle_field',
-				'Soll vor oder nach dem Beitragstitel Text ausgegeben werden?',
-				array( $this, 'mytitle_field' ),
-				'reading',
-				'mytitle_section'
+				'mybutton_text',
+				__( 'Button Text', 'mybutton' ),
+				array( $this, 'mybutton_text' ),
+				'mybutton',
+				'mybutton_section'
 			);
+
+			add_settings_field(
+				'mybutton_url',
+				__( 'Button URL', 'mybutton' ),
+				array( $this, 'mybutton_url' ),
+				'mybutton',
+				'mybutton_section'
+			);
+
 
 
 		}
 
-		function mytitle_field() {
+		function mybutton_text() {
 
-			$mytitle = (array) get_option( 'mytitle' );
+			$mybutton = (array) get_option( 'mybutton' );
 
-			$html = '<label for="mytitle_before">Was soll <em>vor</em> dem Titel erscheinen?</label><br />';
-			$html .= '<input type="text" id="mytitle_before" name="mytitle[before]" value="' . esc_attr( $mytitle['before'] ) . '" /><br />';
-			$html .= '<label for="mytitle_after">Was soll <em>nach</em> dem Titel erscheinen?</label><br />';
-			$html .= '<input type="text" id="mytitle_after" name="mytitle[after]" value="' . esc_attr( $mytitle['after'] ) . '" /><br />';
+			$html = '<label for="mybutton_text">'.__('Button Text','mybutton').'</label><br />';
+			$html .= '<input type="text" id="mybutton_text" name="mybutton[text]" value="' . esc_attr( $mybutton['text'] ) . '" /><br />';
+
+			echo $html;
+		}
+
+		function mybutton_url() {
+
+			$mybutton = (array) get_option( 'mybutton' );
+
+			$html = '<label for="mybutton_url">'.__('Button URL','mybutton').'</label><br />';
+			$html .= '<input type="url" id="mybutton_url" name="mybutton[url]" value="' . esc_attr( $mybutton['url'] ) . '" /><br />';
 
 			echo $html;
 		}
@@ -62,5 +80,25 @@ class My_Title {
 				}
 			}
 			return apply_filters( 'sanitize', $output, $input );
+		}
+
+		function mybutton_settings_page() {
+			add_options_page( 'My Button', __('My Button Settings', 'mybutton'), 'manage_options', 'mybutton', array( $this, 'mybutton_settings_form') );
+		}
+
+		function mybutton_settings_form() {
+			?>
+			<form action='options.php' method='post' class="wrap">
+
+				<h1><?php _e('My Button', 'mybutton'); ?></h1>
+
+				<?php
+				settings_fields( 'mybutton' );
+				do_settings_sections( 'mybutton' );
+				submit_button();
+				?>
+
+			</form>
+			<?php
 		}
 }
