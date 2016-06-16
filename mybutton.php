@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: MyButton
-Version: 0.1
+Version: 0.2
 Description: Adds a custom button underneath posts.
 Author: Bego Mario Garde
 Author URI: https://pixolin.de
